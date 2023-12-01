@@ -2,6 +2,7 @@
 
 package com.prathamngundikere.mysoothe
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -45,15 +46,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
-import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,13 +59,11 @@ import androidx.compose.ui.unit.dp
 import com.prathamngundikere.mysoothe.ui.theme.MySootheTheme
 
 class MainActivity : ComponentActivity() {
-    @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MySootheTheme {
-                val windowSizeClass = calculateWindowSizeClass(this)
-                MySootheApp(windowSizeClass)
+                MySootheApp()
             }
         }
     }
@@ -309,7 +305,7 @@ private fun SootheNavigationRail(modifier: Modifier = Modifier) {
     ) {
         Column(
             modifier = modifier.fillMaxHeight(),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             NavigationRailItem(
@@ -349,21 +345,19 @@ fun MySootheAppLandscape() {
         Surface(color = MaterialTheme.colorScheme.background) {
             Row {
                 SootheNavigationRail()
-                HomeScreen(Modifier.padding(16.dp))
+                HomeScreen()
             }
         }
     }
 }
 
 @Composable
-fun MySootheApp(windowSize: WindowSizeClass) {
-    when (windowSize.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
-            MySootheAppPortrait()
-        }
-        WindowWidthSizeClass.Expanded -> {
-            MySootheAppLandscape()
-        }
+fun MySootheApp() {
+    val configuration = LocalConfiguration.current
+    if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        MySootheAppPortrait()
+    } else {
+        MySootheAppLandscape()
     }
 }
 @Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)

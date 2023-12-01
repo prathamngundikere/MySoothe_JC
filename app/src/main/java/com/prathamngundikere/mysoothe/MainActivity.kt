@@ -349,7 +349,7 @@ fun MySootheAppLandscape() {
         Surface(color = MaterialTheme.colorScheme.background) {
             Row {
                 SootheNavigationRail()
-                HomeScreen()
+                HomeScreen(Modifier.padding(16.dp))
             }
         }
     }
@@ -386,5 +386,12 @@ fun FavoriteCollectionCardPreview() {
             drawable = R.drawable.picthree,
             modifier = Modifier.padding(8.dp)
         )
+    }
+}
+@Preview(showBackground = true, backgroundColor = 0xFFF5F0EE)
+@Composable
+fun LandscapePreview() {
+    MySootheTheme {
+        MySootheAppLandscape()
     }
 }
